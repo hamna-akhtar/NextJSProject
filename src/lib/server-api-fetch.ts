@@ -1,0 +1,28 @@
+import { auth } from "@clerk/nextjs/server";
+import toast from "react-hot-toast";
+
+export async function serverApiFetch(path: string, options: RequestInit = {}) {
+  const base = process.env.NEXT_PUBLIC_API_URL!;
+
+  const { getToken } = await auth();
+  const token = await getToken();
+
+  const res = await fetch(`${base}${path}`, {
+    credentials: "include",
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    ...options,
+
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    toast(`Something went wrong: API ${res.status}: ${text || res.statusText}`);
+  }
+  if (res.status === 204) return null;
+  return res.json();
+}
