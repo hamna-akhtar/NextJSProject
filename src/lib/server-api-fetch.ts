@@ -1,5 +1,4 @@
 import { auth } from "@clerk/nextjs/server";
-import toast from "react-hot-toast";
 
 export async function serverApiFetch(path: string, options: RequestInit = {}) {
   const base = process.env.NEXT_PUBLIC_API_URL!;
@@ -21,7 +20,8 @@ export async function serverApiFetch(path: string, options: RequestInit = {}) {
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    toast(`Something went wrong: API ${res.status}: ${text || res.statusText}`);
+    console.log(`Something went wrong: API ${res.status}: ${text || res.statusText}`);
+    return []
   }
   if (res.status === 204) return null;
   return res.json();
