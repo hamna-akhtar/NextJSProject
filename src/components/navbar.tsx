@@ -34,29 +34,37 @@ export function Navbar() {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
+             <li>
+              <Link href="/friends" className="text-lg">
+                Friends
+              </Link>
+            </li>
             <li>
               <Link href="/journals" className="text-lg">
                 Journals
               </Link>
             </li>
-            <li>
-              <Link href="/friends" className="text-lg">
-                Friends
-              </Link>
+             <li>
+            <Link href="/tasks" className="text-lg">
+              Reminders
+            </Link>
             </li>
           </ul>
         </div>
 
-        <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
+        <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-white" />
         <span className="btn btn-ghost text-xl">Journal Share App</span>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-3 text-lg">
           <li>
+            <Link href="/friends">Friends</Link>
+          </li>
+          <li>
             <Link href="/journals">Journals</Link>
           </li>
           <li>
-            <Link href="/friends">Friends</Link>
+            <Link href="/tasks">Reminders</Link>
           </li>
         </ul>
       </div>

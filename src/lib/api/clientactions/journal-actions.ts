@@ -70,3 +70,7 @@ export async function createJournal(formData: FormData) {
 export async function deleteJournal(journal_id: number) {
   return clientApiFetch(`journals/${journal_id}/`, { method: "DELETE" });
 }
+
+export async function deleteTask(task_id: number) {
+  return clientApiFetch(`tasks/${task_id}/`, { method: "DELETE" });
+}

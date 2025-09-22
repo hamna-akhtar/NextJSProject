@@ -3,8 +3,8 @@ import React from "react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  acceptFriendRequestAsync,
-  deleteFriendRequestAsync,
+  acceptFriendRequestThunk,
+  deleteFriendRequestThunk,
 } from "@/store/slices/friends-slice";
 import { clearError } from "@/store/slices/journal-slice";
 import { IconX } from "@tabler/icons-react";
@@ -48,7 +48,7 @@ export function RequestsList({
     const token = await getToken();
     setClientToken(token);
     dispatch(
-      deleteFriendRequestAsync({
+      deleteFriendRequestThunk({
         request_id: request_id,
         type,
         curr_user_id,
@@ -59,7 +59,7 @@ export function RequestsList({
   async function handleAccept(request_id: number) {
     const token = await getToken();
     setClientToken(token);
-    dispatch(acceptFriendRequestAsync(request_id));
+    dispatch(acceptFriendRequestThunk(request_id));
   }
 
   const isDeleting = (request_id: number) =>

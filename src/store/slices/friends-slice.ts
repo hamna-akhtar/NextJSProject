@@ -1,4 +1,3 @@
-// store/friendsSlice.ts - Version 3
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { FriendRequest, FriendsState, MiniUser, User } from "@/lib/interfaces";
 import {
@@ -20,7 +19,7 @@ const initialState: FriendsState = {
   error: null,
 };
 
-export const deleteFriendRequestAsync = createAsyncThunk(
+export const deleteFriendRequestThunk = createAsyncThunk(
   "friends/deleteFriendRequest",
   async (
     {
@@ -43,7 +42,7 @@ export const deleteFriendRequestAsync = createAsyncThunk(
   },
 );
 
-export const acceptFriendRequestAsync = createAsyncThunk(
+export const acceptFriendRequestThunk = createAsyncThunk(
   "friends/acceptFriendRequest",
   async (request_id: number, { rejectWithValue }) => {
     try {
@@ -59,7 +58,7 @@ export const acceptFriendRequestAsync = createAsyncThunk(
   },
 );
 
-export const sendFriendRequestAsync = createAsyncThunk(
+export const sendFriendRequestThunk = createAsyncThunk(
   "friends/sendFriendRequest",
   async ({ user_id }: { user_id: number }, { rejectWithValue }) => {
     try {
@@ -101,12 +100,12 @@ const friendsSlice = createSlice({
   extraReducers: (builder) => {
     // delete friend request
     builder
-      .addCase(deleteFriendRequestAsync.pending, (state, action) => {
+      .addCase(deleteFriendRequestThunk.pending, (state, action) => {
         const { request_id } = action.meta.arg;
         state.loading.deleting.push(request_id);
         state.error = null;
       })
-      .addCase(deleteFriendRequestAsync.fulfilled, (state, action) => {
+      .addCase(deleteFriendRequestThunk.fulfilled, (state, action) => {
         const { request_id, type, curr_user_id } = action.payload;
 
         state.loading.deleting = state.loading.deleting.filter(
@@ -160,7 +159,7 @@ const friendsSlice = createSlice({
           }
         }
       })
-      .addCase(deleteFriendRequestAsync.rejected, (state, action) => {
+      .addCase(deleteFriendRequestThunk.rejected, (state, action) => {
         const { request_id } = action.meta.arg;
         state.loading.deleting = state.loading.deleting.filter(
           (id) => id !== request_id,
@@ -170,12 +169,12 @@ const friendsSlice = createSlice({
 
     // accept friend request
     builder
-      .addCase(acceptFriendRequestAsync.pending, (state, action) => {
+      .addCase(acceptFriendRequestThunk.pending, (state, action) => {
         const request_id = action.meta.arg;
         state.loading.accepting.push(request_id);
         state.error = null;
       })
-      .addCase(acceptFriendRequestAsync.fulfilled, (state, action) => {
+      .addCase(acceptFriendRequestThunk.fulfilled, (state, action) => {
         const request_id = action.payload;
 
         state.loading.accepting = state.loading.accepting.filter(
@@ -193,7 +192,7 @@ const friendsSlice = createSlice({
           state.received_requests.splice(requestIndex, 1);
         }
       })
-      .addCase(acceptFriendRequestAsync.rejected, (state, action) => {
+      .addCase(acceptFriendRequestThunk.rejected, (state, action) => {
         const request_id = action.meta.arg;
         state.loading.accepting = state.loading.accepting.filter(
           (id) => id !== request_id,
@@ -203,12 +202,12 @@ const friendsSlice = createSlice({
 
     // send friend request
     builder
-      .addCase(sendFriendRequestAsync.pending, (state, action) => {
+      .addCase(sendFriendRequestThunk.pending, (state, action) => {
         const { user_id } = action.meta.arg;
         state.loading.sending.push(user_id);
         state.error = null;
       })
-      .addCase(sendFriendRequestAsync.fulfilled, (state, action) => {
+      .addCase(sendFriendRequestThunk.fulfilled, (state, action) => {
         console.log("send request fulfilled");
         const { user_id, created_request } = action.payload;
 
@@ -227,7 +226,7 @@ const friendsSlice = createSlice({
           // console.log("created_request", created_request);
         }
       })
-      .addCase(sendFriendRequestAsync.rejected, (state, action) => {
+      .addCase(sendFriendRequestThunk.rejected, (state, action) => {
         const { user_id } = action.meta.arg;
         state.loading.sending = state.loading.sending.filter(
           (id) => id !== user_id,

@@ -4,7 +4,7 @@ import { IconX } from "@tabler/icons-react";
 import React from "react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { sendFriendRequestAsync } from "@/store/slices/friends-slice";
+import { sendFriendRequestThunk } from "@/store/slices/friends-slice";
 import { clearError } from "@/store/slices/journal-slice";
 import { useAuth } from "@clerk/nextjs";
 import { setClientToken } from "@/lib/client-api-fetch";
@@ -36,7 +36,7 @@ export function UsersList({
     const token = await getToken();
     setClientToken(token);
     dispatch(
-      sendFriendRequestAsync({
+      sendFriendRequestThunk({
         user_id: request_to_id,
       }),
     );

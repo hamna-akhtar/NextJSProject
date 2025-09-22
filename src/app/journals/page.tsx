@@ -25,7 +25,7 @@ async function JournalsData() {
 
 export default function JournalsPage() {
   return (
-    <div className="w-screen min-h-screen bg-black/[0.96] antialiased bg-grid-white/[0.02] pb-8">
+    <div className="w-screen min-h-screen bg-black/[0.96] antialiased pb-8">
       <div className="max-w-6xl mx-auto px-4 py-12 mt-8">
         <Suspense fallback={<TabsSkeleton />}>
           <JournalsData />

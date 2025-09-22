@@ -34,6 +34,14 @@ export interface FriendRequest {
   accepted: boolean;
 }
 
+export interface Task {
+  id: number;
+  created_at: string;
+  created_by: MiniUser;
+  description: string;
+  completed: boolean;
+}
+
 export interface FriendsState {
   accepted_requests: FriendRequest[];
   received_requests: FriendRequest[];
@@ -50,5 +58,11 @@ export interface FriendsState {
 export interface JournalState {
   current: Journal | null;
   loading: boolean;
+  error: string | null;
+}
+
+export interface TasksState {
+  tasks: Task[];
+  loading:{ completing: number[] };
   error: string | null;
 }

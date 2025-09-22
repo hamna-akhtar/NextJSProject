@@ -18,7 +18,7 @@ export function JournalEditForm({
   const { getToken } = useAuth();
   const dispatch = useAppDispatch();
 
-  const { current: journal, error } = useAppSelector((state) => state.journal);
+  const { current: journal, error, loading } = useAppSelector((state) => state.journal);
 
   useEffect(() => {
     dispatch(setJournal(initial_journal));
@@ -188,8 +188,9 @@ export function JournalEditForm({
             <button
               type="submit"
               className="rounded btn btn-soft hover:btn-accent hover:text-white text-xl p-6 text-neutral-300"
-            >
-              Update
+            disabled={loading}
+                >
+                {loading ? "Updating..." : "Update"}
             </button>
           </div>
         </form>
