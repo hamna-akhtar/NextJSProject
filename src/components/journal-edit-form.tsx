@@ -18,7 +18,11 @@ export function JournalEditForm({
   const { getToken } = useAuth();
   const dispatch = useAppDispatch();
 
-  const { current: journal, error, loading } = useAppSelector((state) => state.journal);
+  const {
+    current: journal,
+    error,
+    loading,
+  } = useAppSelector((state) => state.journal);
 
   useEffect(() => {
     dispatch(setJournal(initial_journal));
@@ -28,23 +32,23 @@ export function JournalEditForm({
 
   async function handleFormSubmit(e: React.FormEvent) {
     e.preventDefault();
-    
+
     try {
       if (journal) {
         const token = await getToken();
         setClientToken(token);
-        
+
         const formData = new FormData();
-        formData.append('title', journal.title);
-        formData.append('content', journal.content);
-        formData.append('access', journal.access);
-        
-        if (journal.access === 'custom' && journal.shared_to) {
-          journal.shared_to.forEach(user => {
-            formData.append('shared_to', user.id.toString());
+        formData.append("title", journal.title);
+        formData.append("content", journal.content);
+        formData.append("access", journal.access);
+
+        if (journal.access === "custom" && journal.shared_to) {
+          journal.shared_to.forEach((user) => {
+            formData.append("shared_to", user.id.toString());
           });
         }
-        
+
         await dispatch(
           updateJournalThunk({ journal_id: journal.id, formData }),
         );
@@ -188,9 +192,9 @@ export function JournalEditForm({
             <button
               type="submit"
               className="rounded btn btn-soft hover:btn-accent hover:text-white text-xl p-6 text-neutral-300"
-            disabled={loading}
-                >
-                {loading ? "Updating..." : "Update"}
+              disabled={loading}
+            >
+              {loading ? "Updating..." : "Update"}
             </button>
           </div>
         </form>

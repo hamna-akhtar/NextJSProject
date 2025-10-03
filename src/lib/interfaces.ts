@@ -63,6 +63,6 @@ export interface JournalState {
 
 export interface TasksState {
   tasks: Task[];
-  loading:{ completing: number[] };
+  loading: { completing: number[] };
   error: string | null;
 }

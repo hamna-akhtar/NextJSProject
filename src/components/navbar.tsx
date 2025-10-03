@@ -34,7 +34,7 @@ export function Navbar() {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-             <li>
+            <li>
               <Link href="/friends" className="text-lg">
                 Friends
               </Link>
@@ -44,10 +44,10 @@ export function Navbar() {
                 Journals
               </Link>
             </li>
-             <li>
-            <Link href="/tasks" className="text-lg">
-              Reminders
-            </Link>
+            <li>
+              <Link href="/tasks" className="text-lg">
+                Reminders
+              </Link>
             </li>
           </ul>
         </div>

@@ -10,19 +10,15 @@ import { deleteTaskThunk } from "@/store/slices/tasks-slice";
 export function TasksList() {
   const { getToken } = useAuth();
   const dispatch = useAppDispatch();
-  const { tasks, loading, error } = useAppSelector(
-    (state) => state.tasks,
-  );
+  const { tasks, loading, error } = useAppSelector((state) => state.tasks);
 
   async function handleTaskComplete(task_id: number) {
     const token = await getToken();
     setClientToken(token);
-    dispatch(
-      deleteTaskThunk({task_id}),
-    );
+    dispatch(deleteTaskThunk({ task_id }));
   }
-  const isCompleting = (task_id: number) => loading.completing.includes(task_id);
-
+  const isCompleting = (task_id: number) =>
+    loading.completing.includes(task_id);
 
   return (
     <>
@@ -37,11 +33,8 @@ export function TasksList() {
           </button>
         </div>
       )}
-      <div
-        className= "my-10 grid gap-6 grid-cols-1"
-      >
+      <div className="my-10 grid gap-6 grid-cols-1">
         {tasks?.map((task, i) => {
-              
           return (
             <div
               key={i}
@@ -52,19 +45,19 @@ export function TasksList() {
                   {task.description}
                 </div>
               </div>
-             <button
+              <button
                 onClick={handleTaskComplete.bind(null, task.id)}
                 className="rounded-lg btn btn-ghost btn-soft hover:btn-accent "
                 disabled={isCompleting(task.id)}
-                >
-                  {isCompleting(task.id) ? "Completing..." : <IconCheck/>}
-            </button>   
+              >
+                {isCompleting(task.id) ? "Completing..." : <IconCheck />}
+              </button>
             </div>
           );
         })}
-        {tasks.length === 0 && (
-        <div className="opacity-60 flex justify-center">All Done!</div>
-      )}
+        {tasks?.length === 0 && (
+          <div className="opacity-60 flex justify-center">All Done!</div>
+        )}
       </div>
     </>
   );

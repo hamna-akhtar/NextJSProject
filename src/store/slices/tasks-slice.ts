@@ -4,33 +4,29 @@ import { deleteTask } from "@/lib/api/clientactions/journal-actions";
 
 const initialState: TasksState = {
   tasks: [],
-  loading: {completing: []},
+  loading: { completing: [] },
   error: null,
 };
 
-export const deleteTaskThunk= createAsyncThunk(
+export const deleteTaskThunk = createAsyncThunk(
   "tasks/deleteTask",
-  async ({ task_id }: { task_id: number },{ rejectWithValue }, ) => {
+  async ({ task_id }: { task_id: number }, { rejectWithValue }) => {
     try {
       await deleteTask(task_id);
       return task_id;
-
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error
-          ? error.message
-          : "Failed to delete task",
+        error instanceof Error ? error.message : "Failed to delete task",
       );
     }
   },
 );
 
-
 const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    initializeTasksData: (state, action: PayloadAction<{tasks: Task[]}>,) => {
+    initializeTasksData: (state, action: PayloadAction<{ tasks: Task[] }>) => {
       state.tasks = action.payload.tasks;
     },
 
@@ -47,7 +43,7 @@ const tasksSlice = createSlice({
       })
       .addCase(deleteTaskThunk.fulfilled, (state, action) => {
         state.error = null;
-        const task_id  = action.payload;
+        const task_id = action.payload;
 
         state.loading.completing = state.loading.completing.filter(
           (id) => id !== task_id,
@@ -56,7 +52,7 @@ const tasksSlice = createSlice({
         const index = state.tasks.findIndex((task) => task.id === task_id);
 
         if (index > -1) {
-            state.tasks.splice(index, 1);
+          state.tasks.splice(index, 1);
         }
       })
       .addCase(deleteTaskThunk.rejected, (state, action) => {
@@ -66,7 +62,6 @@ const tasksSlice = createSlice({
         );
         state.error = action.payload as string;
       });
-
   },
 });
 

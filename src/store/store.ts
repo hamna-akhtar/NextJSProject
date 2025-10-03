@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import journalReducer from "./slices/journal-slice";
 import friendsReducer from "./slices/friends-slice";
-import tasksReducer from "./slices/tasks-slice"
+import tasksReducer from "./slices/tasks-slice";
 
 export const store = configureStore({
   reducer: {
     journal: journalReducer,
     friends: friendsReducer,
-    tasks: tasksReducer
+    tasks: tasksReducer,
   },
 });
 

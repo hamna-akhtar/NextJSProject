@@ -218,12 +218,10 @@ const friendsSlice = createSlice({
         const user_index = state.discover_friends.findIndex(
           (user) => user.id === user_id,
         );
-        console.log("user index: ", user_index);
         if (user_index !== -1) {
           // add to sent requests & remove from discover friends
           state.sent_requests.push(created_request);
           state.discover_friends.splice(user_index, 1);
-          // console.log("created_request", created_request);
         }
       })
       .addCase(sendFriendRequestThunk.rejected, (state, action) => {

@@ -5,7 +5,6 @@ import { useAppDispatch } from "@/store/hooks";
 import { useEffect } from "react";
 import { initializeTasksData } from "@/store/slices/tasks-slice";
 
-
 export function TasksTab({ tasks }: { tasks: Task[] }) {
   const dispatch = useAppDispatch();
 

@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 
 export async function serverApiFetch(path: string, options: RequestInit = {}) {
-  const base = process.env.NEXT_PUBLIC_API_URL!;
+  const base = process.env.INTERNAL_API_URL!;
 
   const { getToken } = await auth();
   const token = await getToken();
@@ -20,8 +20,10 @@ export async function serverApiFetch(path: string, options: RequestInit = {}) {
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    console.log(`Something went wrong: API ${res.status}: ${text || res.statusText}`);
-    return []
+    console.log(
+      `Something went wrong: API ${res.status}: ${text || res.statusText}`,
+    );
+    return [];
   }
   if (res.status === 204) return null;
   return res.json();

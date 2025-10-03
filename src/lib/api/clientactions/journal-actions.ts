@@ -62,8 +62,8 @@ export async function createJournal(formData: FormData) {
     });
     toast("Created!");
   } catch (err) {
-    // console.error("Error creating journal:", err);
-    toast(`Something went wrong: ${err}`);
+    console.error("Error creating journal:", err);
+    toast(`Something went wrong`);
   }
 }
 

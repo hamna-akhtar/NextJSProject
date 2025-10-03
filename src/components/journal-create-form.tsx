@@ -6,7 +6,6 @@ import { createJournal } from "@/lib/api/clientactions/journal-actions";
 import { useAuth } from "@clerk/nextjs";
 import { setClientToken } from "@/lib/client-api-fetch";
 import { useRouter } from "next/navigation";
-// import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 export function JournalCreateForm({ users }: { users: User[] }) {
   const [access, setAccess] = useState<AccessType>("private");
@@ -16,7 +15,7 @@ export function JournalCreateForm({ users }: { users: User[] }) {
   async function handleCreateJournal(formData: FormData) {
     const token = await getToken();
     setClientToken(token);
-    createJournal(formData);
+    await createJournal(formData);
     router.push("/journals");
   }
 
