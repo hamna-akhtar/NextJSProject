@@ -6,6 +6,8 @@ services:
       - "3000:3000"
     env_file:
       - .env
+    volumes:
+      - .:/app
     depends_on:
       - backend
 
@@ -16,6 +18,8 @@ services:
     container_name: drf-backend
     ports:
       - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
     env_file:
       - ../DRFProject/JournalApp/.env
     volumes:
@@ -23,7 +27,29 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_started
 
+  celery:
+    build:
+      context: ../DRFProject/JournalApp
+      dockerfile: Dockerfile
+    container_name: celery-worker
+    command: celery -A JournalApp worker -l info
+    env_file:
+      - ../DRFProject/JournalApp/.env
+    volumes:
+      - ../DRFProject/JournalApp:/app
+    depends_on:
+      - backend
+      - redis
+
+  redis:
+    image: redis:alpine
+    container_name: redis-broker
+    ports:
+      - "6379:6379"
+  
   postgres:
     image: postgres
     container_name: postgres-container
