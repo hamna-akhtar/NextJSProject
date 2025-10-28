@@ -49,6 +49,11 @@ export function Navbar() {
                 Reminders
               </Link>
             </li>
+            <li>
+              <Link href="/chat" className="text-lg">
+                AI Chat
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -65,6 +70,9 @@ export function Navbar() {
           </li>
           <li>
             <Link href="/tasks">Reminders</Link>
+          </li>
+          <li>
+            <Link href="/chat">AI Chat</Link>
           </li>
         </ul>
       </div>
