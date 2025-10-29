@@ -140,45 +140,6 @@ export function useChat(): UseChatReturn {
   }, [getToken, cleanup]);
 
 
-  // const handleMessage = (data: any) => {
-  //   switch (data.type) {
-  //     case 'system':
-  //       // System message
-  //       setMessages(prev => [...prev, {
-  //         id: Date.now().toString(),
-  //         role: 'system',
-  //         content: data.message,
-  //         timestamp: data.timestamp || new Date().toISOString()
-  //       }]);
-  //       break;
-
-  //     case 'bot':
-  //       // Bot response
-  //       setIsTyping(false);
-  //       setMessages(prev => [...prev, {
-  //         id: Date.now().toString(),
-  //         role: 'bot',
-  //         content: data.message,
-  //         timestamp: data.timestamp || new Date().toISOString()
-  //       }]);
-  //       break;
-
-  //     case 'typing':
-  //       // Bot is typing
-  //       setIsTyping(data.is_typing);
-  //       break;
-
-  //     case 'error':
-  //       // Error message
-  //       setError(data.message);
-  //       setIsTyping(false);
-  //       break;
-
-  //     default:
-  //       console.log('Unknown message type:', data.type);
-  //   }
-  // };
-
   const handleMessage = useCallback((data: any) => {
     switch (data.type) {
       case 'history':
@@ -189,6 +150,7 @@ export function useChat(): UseChatReturn {
           content: msg.content,
           timestamp: msg.timestamp
         })));
+        data.messages.at(-1)?.role === 'user' ? setIsTyping(true) : setIsTyping(false);
         break;
 
       case 'system':
@@ -213,6 +175,7 @@ export function useChat(): UseChatReturn {
       case 'history_cleared':
         // clear messages
         setMessages([]);
+        setIsTyping(false)
         console.log(data.message);
         break;
 
