@@ -32,7 +32,7 @@ export async function updateJournal(journal_id: number, formData: FormData) {
     const shared_to = formData.getAll("shared_to");
     const access = formData.get("access");
 
-    const updated_journal = await clientApiFetch(`/journals/${journal_id}/`, {
+    const updated_journal = await clientApiFetch(`journals/${journal_id}/`, {
       method: "PUT",
       body: JSON.stringify({
         title: title,
@@ -43,8 +43,8 @@ export async function updateJournal(journal_id: number, formData: FormData) {
     });
     return updated_journal;
   } catch (err) {
-    // console.error("Error updating journal:", err);
-    toast(`Something went wrong: ${err}`);
+    console.error("Error updating journal:", err);
+    toast(`Something went wrong`);
     return;
   }
 }

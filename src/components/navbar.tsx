@@ -49,6 +49,11 @@ export function Navbar() {
                 Reminders
               </Link>
             </li>
+            <li>
+              <Link href="/chat" className="text-lg">
+                AI Chat
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -66,10 +71,13 @@ export function Navbar() {
           <li>
             <Link href="/tasks">Reminders</Link>
           </li>
+          <li>
+            <Link href="/chat">AI Chat</Link>
+          </li>
         </ul>
       </div>
       <div className="navbar-end mr-5">
-        <SignedOut>
+        {/* <SignedOut>
           <SignInButton>
             <button className="rounded-lg btn text-md hover:text-lg hover:btn-primary">
               Sign In
@@ -80,7 +88,7 @@ export function Navbar() {
               Sign Up
             </button>
           </SignUpButton>
-        </SignedOut>
+        </SignedOut> */}
         <SignedIn>
           <UserButton />
         </SignedIn>

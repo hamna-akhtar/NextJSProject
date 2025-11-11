@@ -66,3 +66,12 @@ export interface TasksState {
   loading: { completing: number[] };
   error: string | null;
 }
+
+export type RoleType = 'user' | 'bot' | 'system';
+
+export interface ChatMessageType {
+  id: string;
+  role: RoleType;
+  content: string;
+  timestamp: string;
+}
