@@ -42,12 +42,6 @@ export function ChatInterface() {
 
   const handleClearHistory = () => {
     clearHistory();
-    // setShowClearConfirm(false);
-    // Close modal after clearing
-    // const modal = document.getElementById('clear_chat_modal') as HTMLDialogElement | null;
-    // if (modal) {
-    //   modal.close();
-    // }
   };
 
     const openModal = (id: string) => {
@@ -156,7 +150,7 @@ export function ChatInterface() {
                   <div className="text-left space-y-2">
                     <p className="text-sm text-gray-500">Try asking:</p>
                     <ul className="text-sm text-gray-700 space-y-1">
-                      <li>• "When did i write my last journal entry?"</li>
+                      <li>• "What's my latest journal entry?"</li>
                       <li>• "What is my top pending task?"</li>
                       <li>• "Have i received any friend requests?"</li>
                     </ul>

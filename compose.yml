@@ -29,6 +29,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      llm_service:
+        condition: service_started
 
   celery:
     build:
@@ -43,6 +45,20 @@ services:
     depends_on:
       - backend
       - redis
+      - llm_service
+
+  llm_service:
+    build:
+      context: ../DRFProject/llm_service
+      dockerfile: Dockerfile
+    container_name: llm_service
+    ports:
+      - "8001:8001"
+    environment:
+      - MODEL_PATH=/app/llm_models/Phi-3-mini-4k-instruct-q4.gguf
+    volumes:
+      - ../DRFProject/llm_service:/app
+    restart: unless-stopped
 
   redis:
     image: redis:alpine
@@ -58,7 +74,7 @@ services:
     env_file:
       - ../DRFProject/JournalApp/.env
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U me -d journalappdb"]
       interval: 5s

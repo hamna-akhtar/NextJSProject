@@ -7,6 +7,7 @@ import { updateJournalThunk, setJournal } from "@/store/slices/journal-slice";
 import { useAuth } from "@clerk/nextjs";
 import { setClientToken } from "@/lib/client-api-fetch";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export function JournalEditForm({
   initial_journal,
@@ -17,6 +18,7 @@ export function JournalEditForm({
 }) {
   const { getToken } = useAuth();
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const {
     current: journal,
@@ -53,6 +55,7 @@ export function JournalEditForm({
           updateJournalThunk({ journal_id: journal.id, formData }),
         );
         toast("Updated!");
+        router.push(`/journals/${journal.id}`);
       }
     } catch (err) {
       console.error("Update failed:", err);

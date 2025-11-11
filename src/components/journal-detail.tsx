@@ -9,6 +9,7 @@ export async function JournalDetail({ journal_id }: { journal_id: number }) {
     getJournalDetail(journal_id),
     getMyProfile(),
   ]);
+  const journal_tasks = journal?.tasks
 
   const isAuthor = curr_user.id == journal.author.id;
   return (
@@ -28,7 +29,7 @@ export async function JournalDetail({ journal_id }: { journal_id: number }) {
             <IconPointFilled className="mx-4" size={12} />
             {journal.access == "custom" ? "shared" : journal.access}
           </p>
-          {isAuthor && <JournalAuthorButtons journal_id={journal.id} />}
+          {isAuthor && <JournalAuthorButtons journal_id={journal.id} journal_tasks={journal_tasks} />}
         </div>
 
         {/* content  */}

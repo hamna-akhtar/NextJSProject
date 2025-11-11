@@ -25,7 +25,8 @@ export async function clientApiFetch(path: string, options: RequestInit = {}) {
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    toast(`Something went wrong: API ${res.status}: ${text || res.statusText}`);
+    console.log(`Something went wrong: API ${res.status}: ${text || res.statusText}`);
+    toast(`Something went wrong: API ${res.status}`);
   }
   if (res.status === 204) return null;
   return res.json();

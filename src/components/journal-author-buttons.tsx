@@ -7,8 +7,11 @@ import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useAuth } from "@clerk/nextjs";
 import { setClientToken } from "@/lib/client-api-fetch";
 import { toast } from "react-hot-toast";
+import { Task } from "@/lib/interfaces";
+import { deleteTask } from "@/lib/api/clientactions/journal-actions";
 
-export function JournalAuthorButtons({ journal_id }: { journal_id: number }) {
+export function JournalAuthorButtons({ journal_id , journal_tasks}: { journal_id: number , journal_tasks: Task[]}) {
+  
   const router = useRouter();
   const { getToken } = useAuth();
 
@@ -19,7 +22,21 @@ export function JournalAuthorButtons({ journal_id }: { journal_id: number }) {
     }
   }
 
-  async function handleDeleteJournal() {
+  async function handleDeleteJournalAndTasks() {
+    try {
+      journal_tasks.forEach( async (task) => {
+        const token = await getToken();
+        setClientToken(token);
+        await deleteTask(task.id);
+      });
+    } catch (err) {
+      console.error("Error deleting tasks for journal:", journal_id, ":", err);
+      toast(`Something went wrong when deleting journal tasks`);
+    }
+    handleDeleteJournal();
+  }
+
+   async function handleDeleteJournal() {
     try {
       const token = await getToken();
       setClientToken(token);
@@ -27,8 +44,8 @@ export function JournalAuthorButtons({ journal_id }: { journal_id: number }) {
       // console.log("Deleted journal");
       router.push("/journals");
     } catch (err) {
-      // console.error("Error deleting journal:", err);
-      toast(`Something went wrong: ${err}`);
+      console.error("Error deleting journal:", err);
+      toast(`Something went wrong`);
     }
   }
 
@@ -46,13 +63,13 @@ export function JournalAuthorButtons({ journal_id }: { journal_id: number }) {
       {/* delete button w modal*/}
       <button
         className="btn group btn-soft text-lg text-neutral-300 hover:text-white"
-        onClick={() => openModal("my_modal_5")}
+        onClick={() => openModal("delete_journal_modal")}
       >
         <IconTrash className="pr-0.5 group-hover:p-0 group-hover:text-red-600" />{" "}
         Delete
       </button>
 
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+      <dialog id="delete_journal_modal" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box bg-zinc-800">
           <p className="py-4 font-bold text-xl text-neutral-300 ">
             Are you sure you want to delete this journal entry?
@@ -60,12 +77,41 @@ export function JournalAuthorButtons({ journal_id }: { journal_id: number }) {
           <div className="modal-action">
             <form method="dialog" className="flex flex-row ">
               <button
-                onClick={handleDeleteJournal}
-                className="btn btn-ghost text-lg"
+                onClick={() => openModal("delete_tasks_modal")}
+                className="btn btn-ghost text-lg hover:btn-error rounded-lg"
               >
                 Yes
               </button>
-              <button className="btn btn-ghost text-lg ">Cancel</button>
+              <button className="btn btn-ghost text-lg rounded-lg">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+      
+       <dialog id="delete_tasks_modal" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box bg-zinc-800">
+          <p className="py-4 font-bold text-xl text-neutral-300 ">
+          Do you also want to delete all pending tasks related to this journal?
+          </p>
+          <div className="modal-action">
+            <form method="dialog" className="flex flex-row justify-between w-full">
+              <div className="flex flex-row justify-start"> 
+                <button className="btn btn-ghost text-lg rounded-lg">Cancel</button>
+              </div>
+              <div className="flex flex-row justify-end"> 
+                <button
+                  onClick={handleDeleteJournalAndTasks}
+                  className="btn btn-ghost text-lg hover:btn-error rounded-lg"
+                >
+                  Yes
+                </button>
+                <button 
+                  onClick={handleDeleteJournal}
+                  className="btn btn-ghost text-lg rounded-lg"
+                  >
+                  No
+                </button>
+              </div>
             </form>
           </div>
         </div>

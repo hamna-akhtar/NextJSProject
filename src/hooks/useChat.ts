@@ -27,6 +27,7 @@ export function useChat(): UseChatReturn {
   const isConnecting = useRef(false);
   const isMounted = useRef(true); 
 
+  
   const cleanup = useCallback(() => {
     // clear reconnect timeout
     if (reconnectTimeout.current) {
@@ -52,6 +53,8 @@ export function useChat(): UseChatReturn {
     
     isConnecting.current = false;
   }, []);
+
+
 
   const connect = useCallback(async () => {
 
@@ -137,7 +140,7 @@ export function useChat(): UseChatReturn {
       setError('Failed to connect');
       isConnecting.current = false;
     }
-  }, [getToken, cleanup]);
+  }, [getToken]);
 
 
   const handleMessage = useCallback((data: any) => {
@@ -236,7 +239,7 @@ const clearHistory = useCallback(() => {
     console.log('manual reconnect');
     cleanup();
     connect();
-  }, [connect, cleanup]);
+  }, [connect]);
 
   // connect on mount
   useEffect(() => {
@@ -250,7 +253,7 @@ const clearHistory = useCallback(() => {
       isMounted.current = false;
       cleanup();
     };
-  }, [connect, cleanup]);
+  }, [connect]);
 
   return {
     messages,

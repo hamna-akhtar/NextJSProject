@@ -77,7 +77,7 @@ export function Navbar() {
         </ul>
       </div>
       <div className="navbar-end mr-5">
-        <SignedOut>
+        {/* <SignedOut>
           <SignInButton>
             <button className="rounded-lg btn text-md hover:text-lg hover:btn-primary">
               Sign In
@@ -88,7 +88,7 @@ export function Navbar() {
               Sign Up
             </button>
           </SignUpButton>
-        </SignedOut>
+        </SignedOut> */}
         <SignedIn>
           <UserButton />
         </SignedIn>
