@@ -1,0 +1,82 @@
+services:
+  frontend:
+    build: .
+    container_name: nextjs-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ../DRFProject/JournalApp
+      dockerfile: Dockerfile
+    container_name: drf-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+    env_file:
+      - ../DRFProject/JournalApp/.env
+    volumes:
+      - ../DRFProject/JournalApp:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  celery:
+    build:
+      context: ../DRFProject/JournalApp
+      dockerfile: Dockerfile
+    container_name: celery-worker
+    command: celery -A JournalApp worker -l info
+    env_file:
+      - ../DRFProject/JournalApp/.env
+    volumes:
+      - ../DRFProject/JournalApp:/app
+    depends_on:
+      - backend
+      - redis
+
+  redis:
+    image: redis:alpine
+    container_name: redis-broker
+    ports:
+      - "6379:6379"
+  
+  postgres:
+    image: postgres
+    container_name: postgres-container
+    ports:
+      - "5433:5432"
+    env_file:
+      - ../DRFProject/JournalApp/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U me -d journalappdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok-tunnel
+    command: http --domain=velar-enzymatically-madlyn.ngrok-free.app backend:8000
+    ports:
+      - "4040:4040"
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    env_file:
+      - .env
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
